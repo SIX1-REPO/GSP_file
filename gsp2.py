@@ -32,7 +32,9 @@ class GSP:
         # Valid_bids内の要素をランダムに並び替えることで、idの順番によるバイアスを防いでいる
         random.shuffle(valid_bids)
         # valid_bidsをbidの金額が大きい順に並び替えている
-        valid_bids.sort(key=rev_cmp_bids)
+        # valid_bids.sort(key=rev_cmp_bids)
+        
+        valid_bids.sort(key=lambda x: x[1], reverse=True)
 
         #広告の枠の数を取得し、その数だけvalid_bidsの上位から取り出し、allocated_bidsに格納している
         num_slots = len(slot_clicks)
@@ -43,6 +45,7 @@ class GSP:
         allocation, just_bids = zip(*allocated_bids)
 
         # Each pays the bid below them, or the reserve
+        # クリック単価の設定のため、それぞれの順番の次の単価を取得
         per_click_payments = list(just_bids[1:])  # first num_slots - 1 slots
         # figure out whether the last slot payment is set by the reserve or
         # the first non-allocated bidder
@@ -51,6 +54,8 @@ class GSP:
         else:
             last_payment = reserve
         per_click_payments.append(last_payment)
+
+        # 広告id　と　クリック単価を返す
         return (list(allocation), per_click_payments)
 
     @staticmethod

@@ -16,7 +16,7 @@ import pprint
 import random
 import sys
 
-from gsp import GSP
+from gsp2 import GSP
 from vcg import VCG
 from history import History
 from stats import Stats
